@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leonardo AI Demo</title>
+</head>
+<body>
+    <h1>Leonardo AI Image Generator</h1>
+    <input type="text" id="keyword" placeholder="Enter keyword">
+    <button onclick="generatePrompt()">Generate Prompt</button>
+    <p id="result"></p>
+
+    <script>
+        async function generatePrompt() {
+            const keyword = document.getElementById("keyword").value;
+            if (!keyword) {
+                alert("Please enter a keyword!");
+                return;
+            }
+            try {
+                const response = await fetch('/api/generate-prompt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ keyword })
+                });
+                const data = await response.json();
+                document.getElementById("result").innerText = data.prompt || "No prompt generated.";
+            } catch (error) {
+                console.error("Error generating prompt:", error);
+                document.getElementById("result").innerText = "Error generating prompt.";
+            }
+        }
+    </script>
+</body>
+</html>
